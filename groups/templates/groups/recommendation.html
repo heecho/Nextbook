@@ -1,0 +1,24 @@
+{% extends "nextbook/base_site.html" %}
+{% block content %}
+{% load staticfiles %}
+
+{% if books %}
+    <h2>{{title}}: </h2>
+    {% for book in books %}
+    	<a href = "https://www.goodreads.com/book/show/{{book.gr_book_id}}">{{book.title}}</a>
+        <br>
+    {% endfor %}
+{% else %}
+    <p>Sorry, no Recommendations have been generated.</p>
+{% endif %}
+
+{%if allrecs%}
+	<h2>Archives: </h2>
+	{% for rec in allrecs%}
+		<a href = "{%url 'groups:showrec' group.gr_group_id rec.id%}">{{rec.name}} - {{rec.pubdate}}</a>
+		<br>
+	{% endfor %}
+{% else %}
+    <p>There are no archived Recommendations</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "nextbook/base_site.html" %}
+{% block content %}
+{% load staticfiles %}
+
+<html>
+<body>
+	<form action = "/members/login_user" method = "post">{% csrf_token %}
+		<p>Please login:</p>
+		<div>Username:<br><input type = "text" name ='username'></div>
+		<div>Password:<br><input type = "password" name ='password'></div>
+		<input type = "submit" value = "Login">
+	</form>
+</body>
+</html>
+{% endblock %}

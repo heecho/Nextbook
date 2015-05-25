@@ -1,0 +1,21 @@
+{% extends "nextbook/base_site.html" %}
+{% block content %}
+{% load staticfiles %}
+
+{% if members %}
+    <h4>{{group.title}}'s Members: </h4>
+    {% for user in members %}
+        <p>{{user}}</p>
+        <br>
+    {% endfor %}
+{% else %}
+    <p>This Group Has no Members</p>
+{% endif %}
+
+<form action = "{% url 'groups:runrec' group.gr_group_id %}" method = "post">{% csrf_token %}
+		<h4>Get New Recommendations for Your Group:</h4>
+		<p>Please enter a title for your recommendations list:</p>
+		Title:<input type = "text" name ='title'>
+		<input type = "submit" value = "Fetch!">
+</form>
+{% endblock %}

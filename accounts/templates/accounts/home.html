@@ -1,0 +1,14 @@
+{% extends "nextbook/base_site.html" %}
+{% block content %}
+{% load staticfiles %}
+
+{% if groups %}
+    <h4>{{user.first_name}}'s Groups: </h4>
+    {% for group in groups %}
+        <a href="{% url 'groups:home' group.gr_group_id %}">{{group.title}}</a>
+        <br>
+    {% endfor %}
+{% else %}
+    <p>Go Join some Groups on Goodreads!</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "nextbook/base_site.html" %}
+{% block content %}
+{% load staticfiles %}
+{%if group_recs%}
+	<h2>All Recommendations for {{user.first_name}}'s Groups</h2>
+	{% for group in group_recs%}
+		<h4>{{group.title}}</h4>
+		{% if group_recs|get_item:group %}
+			{% for rec in group_recs|get_item:group %}
+				<a href = "{%url 'groups:showrec' group.gr_group_id rec.id%}">{{rec.name}} - {{rec.pubdate}}</a>
+				<br>
+			{% endfor %}
+		{% else %}
+			<p>There are no Recommendations yet this group</p>
+		{% endif %}
+	{% endfor %}
+{% else %}
+    <p>There are no Recommendations yet for your groups</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,65 @@
+body div.backdrop p {
+	color: #effafa ;
+}
+
+/*body div.backdrop {
+	background-color: #730279;
+	color: #effafa;
+    
+}*/
+
+/*body { 
+     background-image: url('nextbook.jpg');
+     background-repeat: repeat; 
+ }
+
+.body {
+     background-color: transparent; 
+ }*/
+
+
+body div.jumbotron {
+	background: #8c8c8c url("nextbook.jpg") repeat right top;
+	color: black;
+  border-top: 10px;
+  border-bottom: 10px;
+  border-style: solid;
+  border-color: #730279;
+
+}
+
+body div.jumbotron p {
+	color: black;
+  font-weight: bold;
+}
+/*head div.navbar div.container-fluid div.navbar-header a.navbar-brand img {
+	max-height: 40px;
+    max-width: 30%; 
+    overflow: visible;
+    padding: 15;
+}*/
+
+#footer {
+  height: 60px;
+  background-color: #8c8c8c;
+  color: white;
+  margin-top:50px;
+  padding-top:20px;
+  padding-bottom:20px;
+}
+
+.scroll-top {
+   position:fixed;
+   bottom:0;
+   right:6%;
+   z-index:100;
+   background: #730279;
+   font-size:24px;
+   border-top-left-radius:3px;
+   border-top-right-radius:3px;
+}
+
+.btn-lg {
+	background: #730279;
+	color: #effafa;
+}
