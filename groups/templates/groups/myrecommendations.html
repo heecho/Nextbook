@@ -3,18 +3,31 @@
 {% load staticfiles %}
 {%if group_recs%}
 	<h2>All Recommendations for {{user.first_name}}'s Groups</h2>
-	{% for group in group_recs%}
-		<h4>{{group.title}}</h4>
-		{% if group_recs|get_item:group %}
-			{% for rec in group_recs|get_item:group %}
-				<a href = "{%url 'groups:showrec' group.gr_group_id rec.id%}">{{rec.name}} - {{rec.pubdate}}</a>
-				<br>
-			{% endfor %}
-		{% else %}
-			<p>There are no Recommendations yet this group</p>
+	<div class="container-fluid">
+    	{% for group in group_recs%}
+			<div class="row">
+        	<div class="col-md-2"><h4>{{group.title}}</h4></div>
+        	{% if group_recs|get_item:group %}
+				<div class="col-md-10">
+					{% for rec in group_recs|get_item:group %}
+					<ul class="recs">
+						<a href = "{%url 'groups:showrec' group.gr_group_id rec.id%}">{{rec.name}} - {{rec.pubdate}}</a>
+					</ul>
+					{% endfor %}	
+				</div>	
+
+			{% else %}
+			<div class="col-md-10">
+			<p>There are no Recommendations yet for this group</p></div>
 		{% endif %}
+	</div>
 	{% endfor %}
+	
 {% else %}
     <p>There are no Recommendations yet for your groups</p>
 {% endif %}
+</div>
+<ul class="nav pull-right scroll-top">
+  <li><a href="" title="Scroll to top"><i class="glyphicon glyphicon-chevron-up"></i></a></li>
+</ul>
 {% endblock %}

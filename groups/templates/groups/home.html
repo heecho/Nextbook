@@ -2,20 +2,42 @@
 {% block content %}
 {% load staticfiles %}
 
+<h1 class = "purple">Group Home</h1>
+<div class = "getrec">
+<form action = "{% url 'groups:runrec' group.gr_group_id %}" method = "post">{% csrf_token %}
+        <h3>Get New Recommendations for Your Group:</h3>
+        <p>Please enter a title for your recommendations list:</p>
+        <div class="row">
+        <div class="col-lg-6">
+         <div class="input-group">
+         <input type="text" class="form-control" placeholder="Enter Title...">
+        <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Go!</button>
+      </span>
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+
+        <!-- Title:<input type = "text" name ='title'>
+        <input type = "submit" value = "Fetch!"> -->
+</form>
+</div>
+<div class = "members">
+<div class="container-fluid">
 {% if members %}
-    <h4>{{group.title}}'s Members: </h4>
+    <h3>{{group.title}}'s Members: </h3>
+    <div class="row">
     {% for user in members %}
-        <p>{{user}}</p>
-        <br>
+        <div class="col-md-3"><img class = 'userpic' src="{% static 'nextbook/gr_user.png' %}" alt="user image"/>
+        <p class = 'username'>{{user}}</p>
+        </div>
     {% endfor %}
+</div>
 {% else %}
     <p>This Group Has no Members</p>
 {% endif %}
 
-<form action = "{% url 'groups:runrec' group.gr_group_id %}" method = "post">{% csrf_token %}
-		<h4>Get New Recommendations for Your Group:</h4>
-		<p>Please enter a title for your recommendations list:</p>
-		Title:<input type = "text" name ='title'>
-		<input type = "submit" value = "Fetch!">
-</form>
+</div>
+</div>
+
 {% endblock %}

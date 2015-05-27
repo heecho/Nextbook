@@ -33,7 +33,7 @@
         <li class="active"><a href="{% url 'myrec' %}">My Recommendations<span class="sr-only">(current)</span></a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link">{{user.first_name}}</a></p>
+        <p class="navbar-text navbar-right">Signed in as <a href="{% url 'members:home' %}" class="navbar-link">{{user.first_name}}</a></p>
         <li><a href="{% url 'members:logout' %}">Logout</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
@@ -42,7 +42,7 @@
 {% endblock %}
 </head>
 
-<body>
+<body id = "backdrop">
 <div id="content">
 	{% block content %}
 	{% endblock %}
@@ -50,4 +50,10 @@
 <script src = "http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </body>
+<div id="footer">
+  <div class="container">
+    <p class="text-muted">This app is powered by <a href="http://www.goodreads.com">goodreads.com</a></p>
+    <p class="text-muted">Cover images provided by <a href="https://openlibrary.org/dev/docs/api/covers">Open Library</a></p>
+  </div>
+</div>
 </html>

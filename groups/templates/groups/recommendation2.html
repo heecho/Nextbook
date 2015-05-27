@@ -1,0 +1,34 @@
+{% extends "nextbook/base_site.html" %}
+{% block content %}
+{% load staticfiles %}
+
+<div id="container">
+{% if books %}
+    <h2>{{title}}: </h2>
+    <div class="item w2">
+    {% for book in books %}
+        {% if book.cover == '0'%}
+            <img src="{% static 'nextbook/notavailable.png' %}" alt="blank cover"/>
+        {% else %}
+           <img src="{{book.cover}}" alt="bookcover"/>
+            
+        {% endif %}
+    {% endfor %}
+</div>
+{% else %}
+    <p>Sorry, no Recommendations have been generated.</p>
+{% endif %}
+</div>
+</div>
+{% endblock %}
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/masonry/3.3.0/masonry.pkgd.min.js"></script>
+
+<script>
+var container = document.querySelector('#container');
+var msnry = new Masonry( container, {
+  // options
+  columnWidth: 0, gutter: 10
+  itemSelector: '.item'
+});
+</script>

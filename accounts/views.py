@@ -6,6 +6,7 @@ from accounts.models import GRData
 from groups.models import Book, Group, Recommendation
 from accounts import goodreads
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def main(request):
@@ -15,6 +16,7 @@ def main(request):
 def about(request):
 	return render(request,'accounts/about.html',{})
 
+@login_required(login_url='members:signin')
 def home(request):
 	user = request.user
 	groups = user.group_set.all()
@@ -43,7 +45,8 @@ def register(request):
 		return HttpResponseRedirect(reverse('members:signin',))
 	
 def signin(request):
-	return render(request,'accounts/signin.html',{})
+	status = ''
+	return render(request,'accounts/signin.html',{'status': status})
 
 def login_user(request):
 	username = request.POST['username']
@@ -55,8 +58,7 @@ def login_user(request):
 		goodreads.create_group(usergroups, user)
 		return HttpResponseRedirect(reverse('members:home',))
 	else:
-		return HttpResponse('invalid Login')
-
+		return render(request,'accounts/signin.html',{'status': "Invalid Login"})
 def log_out(request):
 	logout(request)
 	return HttpResponseRedirect(reverse('main',))

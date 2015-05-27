@@ -5,6 +5,7 @@
 <html>
 <body>
 	<form action = "/members/login_user" method = "post">{% csrf_token %}
+		<h4 id = "error">{{status}}</h4>
 		<p>Please login:</p>
 		<div>Username:<br><input type = "text" name ='username'></div>
 		<div>Password:<br><input type = "password" name ='password'></div>

@@ -1,46 +1,47 @@
-body div.backdrop p {
+/*body div.backdrop p {
 	color: #effafa ;
-}
-
-/*body div.backdrop {
-	background-color: #730279;
-	color: #effafa;
-    
 }*/
-
-/*body { 
-     background-image: url('nextbook.jpg');
-     background-repeat: repeat; 
- }
-
-.body {
-     background-color: transparent; 
- }*/
-
 
 body div.jumbotron {
 	background: #8c8c8c url("nextbook.jpg") repeat right top;
 	color: black;
-  border-top: 10px;
-  border-bottom: 10px;
+  border-top: 20px;
+  border-bottom: 20px;
+  border-left: 0px;
+  border-right: 0px;
   border-style: solid;
   border-color: #730279;
 
 }
 
+#content {
+  background: #8c8c8c url("nextbook2.jpg") repeat right top;
+  color: black;
+  border-top: 5px;
+  border-bottom: 5px;
+  border-left: 0px;
+  border-right: 0px;
+  border-style: solid;
+  border-color: #730279;
+}
+
+
+.userpic{
+  border: 2px;
+  border-color: black;
+  border-style: solid;
+}
+
+.username {
+  font-weight: bold;
+}
 body div.jumbotron p {
 	color: black;
   font-weight: bold;
 }
-/*head div.navbar div.container-fluid div.navbar-header a.navbar-brand img {
-	max-height: 40px;
-    max-width: 30%; 
-    overflow: visible;
-    padding: 15;
-}*/
 
 #footer {
-  height: 60px;
+  height: 120px;
   background-color: #8c8c8c;
   color: white;
   margin-top:50px;
@@ -62,4 +63,84 @@ body div.jumbotron p {
 .btn-lg {
 	background: #730279;
 	color: #effafa;
+}
+
+.col-md-2 {
+  font-weight: bold;
+}
+
+.col-md-3 img {
+  min-height: 100px;
+  max-height: 100px;
+}
+
+/*.members {
+  position: absolute;
+  z-index: 100;
+}*/
+
+/*.getrec{
+  border-bottom: 20px;
+  border-style: solid;
+  border-color: #730279;
+}*/
+
+.books img {
+  min-height: 200px;
+  max-height: 200px;
+}
+
+.item { width: 25%; 
+}
+.item.w2 { width: 100%; 
+}
+
+#error {
+  color: red;
+  font-weight: bold;
+}
+
+
+
+
+/*#content img.backdrop{
+  opacity: 0.4;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  min-height: 1414px;
+  max-height: 1414px;
+  max-width: 100%;
+  z-index: 0;
+}
+*/
+
+#panel {
+  border: 5px;
+  border-style: solid;
+  border-color: #730279;
+  
+  
+}
+.purple{
+  background: #730279;
+  color: #effafa;
+}
+
+.list-group-item a:link{
+  /*z-index: 3;
+  position: relative;*/
+  color: blue;
+  text-decoration: underline;
+  
+}
+.list-group-item a:visited{
+  color: purple;
+  text-decoration: underline;
+  
+}
+.list-group-item a:hover{
+  color: aqua;
+  text-decoration: underline;
+  
 }

@@ -1,17 +1,29 @@
 {% extends "nextbook/base_site.html" %}
 {% block content %}
 {% load staticfiles %}
-
+<div class = "books">
+<div class="container-fluid">
 {% if books %}
     <h2>{{title}}: </h2>
+    <div class="row">
     {% for book in books %}
-    	<a href = "https://www.goodreads.com/book/show/{{book.gr_book_id}}">{{book.title}}</a>
-        <br>
+        {% if book.cover == '0'%}
+            <div class="col-md-3"><img src="{% static 'nextbook/notavailable.png' %}" alt="blank cover"/>
+            <p><a class = "ellipsis" href = "https://www.goodreads.com/book/show/{{book.gr_book_id}}" target="_blank">{{book.title|truncatechars:35}}</a></p>
+            </div>
+        {% else %}
+            <div class="col-md-3"><img src="{{book.cover}}" alt="bookcover"/>
+    	    <p><a class = "ellipsis" href = "https://www.goodreads.com/book/show/{{book.gr_book_id}}" target="_blank">{{book.title|truncatechars:35}}</a></p>
+            </div>
+        {% endif %}
     {% endfor %}
+</div>
 {% else %}
     <p>Sorry, no Recommendations have been generated.</p>
 {% endif %}
-
+</div>
+</div>
+<div class = "archives">
 {%if allrecs%}
 	<h2>Archives: </h2>
 	{% for rec in allrecs%}
@@ -21,4 +33,5 @@
 {% else %}
     <p>There are no archived Recommendations</p>
 {% endif %}
+</div>
 {% endblock %}

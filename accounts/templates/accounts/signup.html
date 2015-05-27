@@ -1,5 +1,7 @@
-<html>
-<body>
+{% extends "nextbook/base_site.html" %}
+{% block content %}
+{% load staticfiles %}
+
 	<form action = "{% url 'members:create' %}" method = "post">{% csrf_token %}
 		<p>Create a new NextBook account: </p>
 		<div>Username:<br><input type = "text" name ='username'></div>
@@ -11,11 +13,20 @@
 		We will need one piece of information to link with your goodreads account. You can find this information on your goodreads profile page.<br>
 		<a href = 'https://www.goodreads.com'>Goodreads Home</a><br>
 		<br>
-		<div>Goodreads ID:<input type = "text" name = 'gr_id'></div> (to locate your ID number, click 'My Books,' your ID is listed in the url after the word 'list')
-		<input type = "submit" value = "Join!">
+		<div class="row">
+        <div class="col-lg-3">
+         <div class="input-group">
+         <input type="text" class="form-control" placeholder="Enter Goodreads ID...">
+        <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Join!</button>
+      </span>
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+		<p>(to locate your ID number, click 'My Books,' your ID is listed in the url after the word 'list')</p>
+		
 		<br>
 		<br>
 		**NextBook will only access data that is publicly available
 	</form>
-</body>
-</html>
+{% endblock %}

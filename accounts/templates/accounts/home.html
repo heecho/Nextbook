@@ -1,14 +1,21 @@
 {% extends "nextbook/base_site.html" %}
+
 {% block content %}
 {% load staticfiles %}
-
+<div id="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading purple"><h1>Welcome {{user.first_name}}!</h1></div>
+  <div class="panel-body"><h2>Your Groups: </h2></div>  
+<ul class="list-group">
 {% if groups %}
-    <h4>{{user.first_name}}'s Groups: </h4>
     {% for group in groups %}
-        <a href="{% url 'groups:home' group.gr_group_id %}">{{group.title}}</a>
+        <li class="list-group-item"><a href="{% url 'groups:home' group.gr_group_id %}">{{group.title}}</a></li>
         <br>
     {% endfor %}
 {% else %}
-    <p>Go Join some Groups on Goodreads!</p>
+    <li class="list-group-item"><p>Go Join some Groups on Goodreads!</p></li>
 {% endif %}
+</ul>
+</div>
+
 {% endblock %}
