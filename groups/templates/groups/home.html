@@ -7,19 +7,9 @@
 <form action = "{% url 'groups:runrec' group.gr_group_id %}" method = "post">{% csrf_token %}
         <h3>Get New Recommendations for Your Group:</h3>
         <p>Please enter a title for your recommendations list:</p>
-        <div class="row">
-        <div class="col-lg-6">
-         <div class="input-group">
-         <input type="text" class="form-control" placeholder="Enter Title...">
-        <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Go!</button>
-      </span>
-    </div><!-- /input-group -->
-  </div><!-- /.col-lg-6 -->
-</div><!-- /.row -->
-
-        <!-- Title:<input type = "text" name ='title'>
-        <input type = "submit" value = "Fetch!"> -->
+        Enter Title: <input type = "text" name ='title'>
+        <input type = "submit" value = "Fetch!">
+    
 </form>
 </div>
 <div class = "members">
