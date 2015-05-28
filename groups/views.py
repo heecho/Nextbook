@@ -9,6 +9,10 @@ from accounts import goodreads
 from django.contrib.auth import authenticate, login, logout
 from django.template.defaulttags import register
 from django.contrib.auth.decorators import login_required
+from rq import Queue
+from worker import conn
+
+
 # Create your views here.
 
 @login_required(login_url='members:signin')
@@ -20,16 +24,27 @@ def home(request, group_id):
 	return render(request,'groups/home.html',{'members':members, 'group': this_group})
 
 def run_rec(request,group_id):
-	groups = Group.objects.filter(gr_group_id = group_id)
-	group = groups[0]
+	q = Queue(connection=conn)
 	title = request.POST['title']
+	job = q.enqueue(api_call, [group_id,title])
+	# print "job",job.get_id()
+	# value = "job-result" + str(job.get_id())
+	# value += str(job.result)
+	return HttpResponseRedirect(reverse('myrec',))
+    
+	#rec_id = recommendation.id
+	#return HttpResponseRedirect(reverse('groups:showrec', args=(group_id,rec_id)))
+
+def api_call(info):
+	# f = "/Users/hannah/Documents/Capstone/bookclubv2/nextbook/jobsresult"
+	# f2 = open(f,"w")
+	# f2.write(group_id[1])
+	# f2.close()
+	groups = Group.objects.filter(gr_group_id = info[0])
+	group = groups[0]
 	get_recs = goodreads.run_rec(str(group.gr_group_id))
-	#print get_recs
 	books = goodreads.create_books(get_recs)
-	print books
-	recommendation = goodreads.create_rec(books, title, group)
-	rec_id = recommendation.id
-	return HttpResponseRedirect(reverse('groups:showrec', args=(group_id,rec_id)))
+	recommendation = goodreads.create_rec(books, info[1], group)
 
 def show_rec(request, group_id, rec_id):
 	groups = Group.objects.filter(gr_group_id = group_id)
