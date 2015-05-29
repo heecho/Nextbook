@@ -12,13 +12,66 @@ import os
 GOODREADS_ACCESS_KEY = os.environ.get("GOODREADS_ACCESS_KEY")
 
 
+BASE_URL = "https://www.goodreads.com/"
+BASE_URL_MEMBERS = BASE_URL + "group/members/"
+BASE_URL_BOOKSHELF = BASE_URL + "review/list/"
+
+def build_goodreads_url(base_url):
+	return base_url + "?key="+GOODREADS_ACCESS_KEY
+
+def build_members_url(group_id):
+	return build_goodreads_url(BASE_URL_MEMBERS+group_id+".xml")
+
+def build_bookshelf_url(userid, shelf, perpage):
+	url = "&format=xml"+"&v=2"+"&shelf="+shelf+"&sort=rating"+"&order=d"+"&per_page="+perpage
+	return build_goodreads_url(BASE_URL_BOOKSHELF+userid) + url
+
+
+def get_gr_url(url):
+	text_data = requests.get(url).text
+	return xmltodict.parse(text_data)
+
+
+def does_shelf_contain_books(booksonshelf):
+	return booksonshelf["GoodreadsResponse"]['reviews'].has_key('review')
+
+
+def build_one_book_dict(book):
+	title = book['book']['title']
+	author = book['book']['authors']['author']['name']
+	isbn = book['book']['isbn']
+	img = "http://covers.openlibrary.org/b/isbn/"+str(isbn)+"-M.jpg"
+	gr_book_id = book['book']['id']['#text']
+	return (title,{'author':author,'count':1, 'isbn':isbn, 'gr_book_id': gr_book_id, 'image': img})
+
+
+def for_constraint(some_array):
+	return [pound_it(x) for x in some_array]
+
+def build_book_dict(books):
+
+	if type(books) != list:
+		return build_one_book_dict(books)
+
+	bookshelfdictionary = {}
+
+	for book in books:
+		title, book_dict = build_one_book_dict(book)
+		if bookshelfdictionary.has_key(title):
+			bookshelfdictionary[title]['count'] = bookshelfdictionary[title]['count']+1
+		else:
+			bookshelfdictionary[title]= book_dict
+	return bookshelfdictionary
+
+
+
 def get_user_groups(gr_id):
 	base_url = "https://www.goodreads.com/group/list"
 	user_id = gr_id
 	key = GOODREADS_ACCESS_KEY
-	fetch_url = base_url+"/"+user_id+".xml"+"?key="+key
-	xml_data = requests.get(fetch_url).text
-	usergroupdict = xmltodict.parse(xml_data)
+	fetch_url = base_url+"/"+user_id+".xml"
+	fetch_url = build_goodreads_url(base_url+fetch_url)
+	usergroupdict = get_gr_url(fetch_url)
 	#print usergroupdict
 	group_ids = {}
 	group_id = usergroupdict["GoodreadsResponse"]["groups"]['list']["group"]
@@ -34,13 +87,8 @@ def get_user_groups(gr_id):
 	return group_ids
 
 def gr_get_group_members(group_id):
-	base_url = "https://www.goodreads.com/group/members/"
-	groupid = group_id
-	key = GOODREADS_ACCESS_KEY
-	fetch_url = base_url+groupid+".xml"+"?key="+key
-	#print fetch_url
-	xml_data = requests.get(fetch_url).text
-	#print xml_data
+	xml_data = requests.get(build_members_url(group_id)).text
+
 	groupmembersdict = xmltodict.parse(xml_data)
 	group_users = groupmembersdict["GoodreadsResponse"]["group_users"]["group_user"]
 	users = {}
@@ -54,45 +102,26 @@ def gr_get_group_members(group_id):
 def get_bookshelf_contents(user_ids,shelf_name):
 	userids = []
 	bookshelfdictionary = {}
+
 	for x in user_ids:
 		gr_id = user_ids[x]
 		userids.append(gr_id)
+
 	for singleuser in userids:
-		base_url = "https://www.goodreads.com/review/list/"
-		userid = singleuser
-		shelf = shelf_name
-		if shelf == 'read':
+		if shelf_name == 'read':
 			perpage = '20'
-		elif shelf == 'to-read':
+		elif shelf_name == 'to-read':
 			perpage = '100'
-		key = GOODREADS_ACCESS_KEY
-		fetch_url = base_url+userid+"?format=xml"+"&key="+key+"&v=2"+"&shelf="+shelf+"&sort=rating"+"&order=d"+"&per_page="+perpage
-		xml_data = requests.get(fetch_url).text
-		booksonshelf = xmltodict.parse(xml_data)
+
+		fetch_url = build_bookshelf_url(singleuser, shelf_name, perpage)
+		booksonshelf = get_gr_url(fetch_url)
+
 		if booksonshelf.has_key("GoodreadsResponse"):
-			if booksonshelf["GoodreadsResponse"]['reviews'].has_key('review'):
+			if does_shelf_contain_books(booksonshelf):
 				books = booksonshelf["GoodreadsResponse"]['reviews']['review']
-				if type(books)== list:
-					for book in books:
-						title = book['book']['title']
-						author = book['book']['authors']['author']['name']
-						isbn = book['book']['isbn']
-						img = "http://covers.openlibrary.org/b/isbn/"+str(isbn)+"-M.jpg"
-						gr_book_id = book['book']['id']['#text']
-						if bookshelfdictionary.has_key(title):
-							bookshelfdictionary[title]['count']= bookshelfdictionary[title]['count']+1
-						else:
-							bookshelfdictionary[title]={'author':author,'count':1, 'isbn':isbn, 'gr_book_id': gr_book_id, 'image': img}
-				else:
-					title = books['book']['title']
-					author = books['book']['authors']['author']['name']
-					isbn = books['book']['isbn']
-					img = "http://covers.openlibrary.org/b/isbn/"+str(isbn)+"-M.jpg"
-					gr_book_id = books['book']['id']['#text']
-					if bookshelfdictionary.has_key(title):
-							bookshelfdictionary[title]['count']= bookshelfdictionary[title]['count']+1
-					else:
-						bookshelfdictionary[title]={'author':author,'count':1, 'isbn':isbn, 'gr_book_id': gr_book_id, 'image': img}
+				
+				bookshelfdictionary = build_book_dict(books)
+
 	#print bookshelfdictionary
 	return bookshelfdictionary
 
