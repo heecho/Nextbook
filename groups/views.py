@@ -9,8 +9,8 @@ from accounts import goodreads
 from django.contrib.auth import authenticate, login, logout
 from django.template.defaulttags import register
 from django.contrib.auth.decorators import login_required
-from rq import Queue
-from worker import conn
+# from rq import Queue
+# from worker import conn
 
 
 # Create your views here.
