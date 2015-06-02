@@ -24,16 +24,21 @@ def home(request, group_id):
 	return render(request,'groups/home.html',{'members':members, 'group': this_group})
 
 def run_rec(request,group_id):
-	q = Queue(connection=conn)
 	title = request.POST['title']
-	job = q.enqueue(api_call, [group_id,title])
+	groups = Group.objects.filter(gr_group_id = group_id)
+	group = groups[0]
+	get_recs = goodreads.run_rec(str(group.gr_group_id))
+	books = goodreads.create_books(get_recs)
+	recommendation = goodreads.create_rec(books, title, group)
+	rec_id = recommendation.id
+	return HttpResponseRedirect(reverse('groups:showrec', args=(group_id,rec_id)))
+
+	#q = Queue(connection=conn)
+	#job = q.enqueue(api_call, [group_id,title])
 	# print "job",job.get_id()
 	# value = "job-result" + str(job.get_id())
 	# value += str(job.result)
-	return HttpResponseRedirect(reverse('myrec',))
-    
-	#rec_id = recommendation.id
-	#return HttpResponseRedirect(reverse('groups:showrec', args=(group_id,rec_id)))
+	#return HttpResponseRedirect(reverse('myrec',))
 
 def api_call(info):
 	# f = "/Users/hannah/Documents/Capstone/bookclubv2/nextbook/jobsresult"
